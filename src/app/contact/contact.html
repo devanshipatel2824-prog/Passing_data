@@ -1,0 +1,33 @@
+<button (click)="openForm()">Add Contact</button>
+
+<br><br>
+
+@if (showForm) {
+  <app-child-componet
+    [editContactData]="selectedContact"
+    (contactAdded)="addContactToParent($event)">
+  </app-child-componet>
+}
+
+<hr>
+
+<ul>
+  @for (c of contacts; track $index) {
+    <li style="margin-bottom: 8px;">
+      {{ c.name }} - {{ c.phone }} - {{ c.email }}
+
+      <!-- Edit & Delete buttons next to text -->
+      <button
+        style="margin-left: 10px;"
+        (click)="editContact(c, $index)">
+        Edit
+      </button>
+
+      <button
+        style="margin-left: 5px;"
+        (click)="deleteContact($index)">
+        Delete
+      </button>
+    </li>
+  }
+</ul>
