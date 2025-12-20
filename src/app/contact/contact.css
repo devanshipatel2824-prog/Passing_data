@@ -123,3 +123,8 @@
 .delete-btn:hover {
   background: #d32f2f;
 }
+.error-msg {
+  color: red;
+  margin-bottom: 8px;
+  font-size: 14px;
+}

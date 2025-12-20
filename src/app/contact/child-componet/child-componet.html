@@ -1,4 +1,4 @@
-<form>
+<!-- <form>
   <input type="text" [(ngModel)]="name" name="name" placeholder="Name">
   <br><br>
 
@@ -10,4 +10,32 @@
 
   <button type="button" (click)="addContact()">Add Data</button>
 
+</form> -->
+<form>
+  <input
+    [(ngModel)]="name"
+    name="name"
+    placeholder="Name">
+
+  <input
+    [(ngModel)]="phone"
+    name="phone"
+    placeholder="Mobile Number">
+
+  <div class="error" *ngIf="phoneError">
+    Mobile number must be 10 digits
+  </div>
+
+  <input
+    [(ngModel)]="email"
+    name="email"
+    placeholder="Email">
+
+  <div class="error" *ngIf="emailError">
+    Invalid email format
+  </div>
+
+  <button type="button" (click)="submit()">
+    {{ editContactData ? 'Update' : 'Add' }}
+  </button>
 </form>

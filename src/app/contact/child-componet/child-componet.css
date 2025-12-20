@@ -1,0 +1,76 @@
+form {
+  width: 320px;
+  margin: 40px auto;
+  padding: 25px;
+  background: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+  animation: popUp 0.5s ease-in-out;
+}
+
+/* Input animation */
+input {
+  width: 100%;
+  padding: 10px 12px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  gap: 10px;
+  transition: all 0.3s ease;
+}
+
+/* Focus effect */
+input:focus {
+  border-color: #4CAF50;
+  box-shadow: 0 0 8px rgba(76, 175, 80, 0.4);
+  outline: none;
+  transform: scale(1.02);
+}
+
+/* Button animation */
+button {
+  width: 100%;
+  padding: 10px;
+  background: linear-gradient(135deg, #4CAF50, #2E8B57);
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 15px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+/* Hover effect */
+button:hover {
+  background: linear-gradient(135deg, #45a049, #228B22);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+}
+
+/* Click effect */
+button:active {
+  transform: scale(0.96);
+}
+
+/* Pop animation */
+@keyframes popUp {
+  0% {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+input {
+  width: 100%;
+  padding: 6px;
+  margin-bottom: 6px;
+}
+
+.error {
+  color: red;
+  font-size: 12px;
+  margin-bottom: 6px;
+}
