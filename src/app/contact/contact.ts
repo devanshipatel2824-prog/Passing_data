@@ -1,10 +1,11 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, inject } from '@angular/core';
 import { ChildComponet } from './child-componet/child-componet';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-contact',
-  imports: [CommonModule, ChildComponet],
+  imports: [CommonModule, ChildComponet,FormsModule],
   templateUrl: './contact.html',
   styleUrl: './contact.css',
   changeDetection: ChangeDetectionStrategy.Default
@@ -143,4 +144,5 @@ this.saveToStorage();
   this.closeForm();
 
 }
+protected n1?:string;
 }
