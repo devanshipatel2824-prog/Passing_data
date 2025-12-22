@@ -1,148 +1,55 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, effect, inject, signal } from '@angular/core';
 import { ChildComponet } from './child-componet/child-componet';
 import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-contact',
-  imports: [CommonModule, ChildComponet,FormsModule],
+  imports: [CommonModule, ChildComponet, FormsModule],
   templateUrl: './contact.html',
   styleUrl: './contact.css',
   changeDetection: ChangeDetectionStrategy.Default
 })
 export class Contact {
-  cdref = inject(ChangeDetectorRef)
-  //showForm = false;
-//   contacts: any[] = [];
-//  editIndex: number | null = null;
-//   selectedContact: any = null;
 
-//   openForm() {
-//     this.showForm = true;
-//     console.log("ABC")
-//     this.cdref.detectChanges()
-//      this.selectedContact = null;
-//     this.editIndex = null;
-//   }
+  cdref = inject(ChangeDetectorRef);
 
-//  addContactToParent(contact: any) {
-//     if (this.editIndex !== null) {
-//       this.contacts[this.editIndex] = contact;   // update
-//     } else {
-//       this.contacts.push(contact);               // add
-//     }
-//     this.showForm = false;
-//   }
+  contacts = signal<any[]>([]);
+  showForm = signal(false);
+  selectedContact = signal<any | null>(null);
+  editIndex = signal<number | null>(null);
 
-//   editContact(contact: any, index: number) {
-//     this.selectedContact = contact;
-//     this.editIndex = index;
-//     this.showForm = true;
-//   }
-
-//   deleteContact(index: number) {
-//     this.contacts.splice(index, 1);
-//   }
-
-// contacts: any[] = [];
-
-// showForm = false;
-// selectedContact: any = null;
-// editIndex: number | null = null;
-
-// openForm() {
-//   this.showForm = true;
-//   this.selectedContact = null;
-//   this.editIndex = null;
-// }
-
-// closeForm() {
-//   this.showForm = false;
-//   this.selectedContact = null;
-//   this.editIndex = null;
-// }
-
-// editContact(contact: any, index: number) {
-//   this.selectedContact = { ...contact }; // clone
-//   this.editIndex = index;
-//   this.showForm = true;
-// }
-
-// deleteContact(index: number) {
-//   this.contacts.splice(index, 1);
-// }
-
-// addContactToParent(contact: any) {
-//   if (this.editIndex !== null) {
-//     this.contacts[this.editIndex] = contact; // update
-//   } else {
-//     this.contacts.push(contact); // add
-//   }
-//   this.closeForm();
-// }
-contacts: any[] = [];
-showForm = false;
-selectedContact: any = null;
-editIndex: number | null = null;
-  duplicateError: string | undefined;
-
-/*  page load then localStorage data load */
-ngOnInit() {
-  const savedData = localStorage.getItem('contacts');
-  if (savedData) {
-    this.contacts = JSON.parse(savedData);
+  openForm() {
+    this.showForm.set(true);
+    this.selectedContact.set(null);
+    this.editIndex.set(null);
   }
-}
 
-/* 🔹 localStorage update helper */
-saveToStorage() {
-  localStorage.setItem('contacts', JSON.stringify(this.contacts));
-}
+  closeForm() {
+    this.showForm.set(false);
+    this.selectedContact.set(null);
+    this.editIndex.set(null);
+  }
 
-openForm() {
-  this.showForm = true;
-  this.selectedContact = null;
-  this.editIndex = null;
-}
+  editContact(contact: any, index: number) {
+    this.selectedContact.set({ ...contact });
+    this.editIndex.set(index);
+    this.showForm.set(true);
+  }
 
-closeForm() {
-  this.showForm = false;
-}
+  deleteContact(index: number) {
+    this.contacts.update(list => list.filter((_, i) => i !== index));
+  }
 
-editContact(contact: any, index: number) {
-  this.selectedContact = { ...contact };
-  this.editIndex = index;
-  this.showForm = true;
-}
-
-deleteContact(index: number) {
-  this.contacts.splice(index, 1);
-  this.saveToStorage();   // 🔹 storage update
-}
-addContactToParent(contact: any) {
-
-  /*  DUPLICATE CHECK */
-  const isDuplicate = this.contacts.some((c, i) => {
-    if (this.editIndex !== null && i === this.editIndex) {
-      return false; // ignore same record while edit
+  saveContact(contact: any) {
+    if (this.editIndex() !== null) {
+      this.contacts.update(list =>
+        list.map((c, i) => i === this.editIndex() ? contact : c)
+      );
+    } else {
+      this.contacts.update(list => [...list, contact]);
     }
-    return c.phone === contact.phone || c.email === contact.email;
-  });
-
-  if (isDuplicate) {
-    this.duplicateError = 'Mobile number or Email already exists';
-    return; //  stop add/update
+    this.closeForm();
   }
 
-  /*  ADD / UPDATE */
-  if (this.editIndex !== null) {
-    this.contacts[this.editIndex] = contact;
-  } else {
-    this.contacts.push(contact);
-  }
-this.saveToStorage();
-  this.closeForm();
-
-}
-protected n1?:string;
 }

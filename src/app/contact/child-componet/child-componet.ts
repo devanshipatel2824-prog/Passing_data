@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, effect, EventEmitter, input, Input, output, Output, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
 @Component({
@@ -9,58 +9,53 @@ import { FormsModule } from '@angular/forms';
   styleUrl: './child-componet.css',
 })
 export class ChildComponet {
-      name = '';
-      phone = '';
-      email = '';
-phoneError = false;
-emailError = false;
- @Input() editContactData: any; 
-  @Output() contactAdded = new EventEmitter<any>();
-isEdit: any;
-ngOnChanges() {
-    if (this.editContactData) {
-      this.name = this.editContactData.name;
-      this.phone = this.editContactData.phone;
-      this.email = this.editContactData.email;
-      this.isEdit = true;
-    } else {
-      this.reset();
-    }
+   contact = input<any | null>();
+  save = output<any>();
+
+  name = signal('');
+  phone = signal('');
+  email = signal('');
+
+  phoneError = signal(false);
+  emailError = signal(false);
+
+  constructor() {
+    effect(() => {
+      const c = this.contact();
+      if (c) {
+      this.name.set(c?.name ?? '');
+      this.phone.set(c?.phone ?? '');
+      this.email.set(c?.email ?? '');
+      } else {
+        this.reset();
+      }
+console.log('name is ',this.name());
+console.log('phone number is',this.phone());
+console.log('email is',this.email());
+    });
   }
-  addContact() {
-    const contact = {
-      name: this.name,
-      phone: this.phone,
-      email: this.email
-    };
 
-    this.contactAdded.emit(contact);
+  submit() {
+    this.phoneError.set(!/^\d{10}$/.test(this.phone()));
+    this.emailError.set(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(this.email()));
 
-this.reset();
+    if (this.phoneError() || this.emailError()) return;
+
+    this.save.emit({
+      name: this.name(),
+      phone: this.phone(),
+      email: this.email(),
+    });
+
+    this.reset();
   }
 
   reset() {
-    this.name = '';
-    this.phone = '';
-    this.email = '';
-    this.isEdit = false;
+    this.name.set('');
+    this.phone.set('');
+    this.email.set('');
   }
-submit() {
-  this.phoneError = !/^\d{10}$/.test(this.phone);
-  this.emailError = !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(this.email);
 
-  if (this.phoneError || this.emailError) return;
-
-  this.contactAdded.emit({
-    name: this.name,
-    phone: this.phone,
-    email: this.email
-  });
-
-  this.name = '';
-  this.phone = '';
-  this.email = '';
-}
   }
 
 

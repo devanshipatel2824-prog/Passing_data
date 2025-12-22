@@ -1,102 +1,20 @@
-<!-- <button (click)="openForm()">Add Contact</button>
-
-<br><br>
-
-@if (showForm) {
-  <app-child-componet
-    [editContactData]="selectedContact"
-    (contactAdded)="addContactToParent($event)">
-  </app-child-componet>
-}
-
-<hr>
-
-<ul>
-  @for (c of contacts; track $index) {
-    <li style="margin-bottom: 8px;">
-      {{ c.name }} - {{ c.phone }} - {{ c.email }}
-
-       Edit & Delete buttons next to text 
-      <button
-        style="margin-left: 10px;"
-        (click)="editContact(c, $index)">
-        Edit
-      </button>
-
-      <button
-        style="margin-left: 5px;"
-        (click)="deleteContact($index)">
-        Delete
-      </button>
-    </li>
-  }
-</ul> -->
-<!-- <button (click)="openForm()">Add Contact</button>
-
-<br><br>
-
-@if (showForm) {
-  <app-child-componet
-    [editContactData]="selectedContact"
-    (contactAdded)="addContactToParent($event)">
-  </app-child-componet>
-}
-
-<hr>
-
-<table class="contact-table" *ngIf="contacts.length > 0">
-  <thead>
-    <tr>
-      <th>Id</th>
-      <th>Name</th>
-      <th>Phone</th>
-      <th>Email</th>
-      <th>Action</th>
-    </tr>
-  </thead>
-
-  <tbody>
-    @for (c of contacts; track $index) {
-      <tr>
-        <td>{{$index + 1}}</td>
-        <td>{{ c.name }}</td>
-        <td>{{ c.phone }}</td>
-        <td>{{ c.email }}</td>
-        <td>
-          <button class="edit-btn" (click)="editContact(c, $index)">
-            Edit
-          </button>
-          <button class="delete-btn" (click)="deleteContact($index)">
-            Delete
-          </button>
-        </td>
-      </tr>
-    }
-  </tbody>
-</table>
-
-<p *ngIf="contacts.length === 0">No contacts available</p> -->
-<button (click)="openForm()">Add Contact</button>
+<!-- <button (click)="openForm()">Add Contact</button> -->
 
 <!-- POPUP -->
-@if (showForm) {
+<!-- @if (showForm) { -->
 
   <!-- background overlay -->
-  <div class="modal-backdrop" (click)="closeForm()"></div>
+  <!-- <div class="modal-backdrop" (click)="closeForm()"></div> -->
 
   <!-- popup box -->
-  <div class="modal-box">
+  <!-- <div class="modal-box">
     <h3>{{ editIndex !== null ? 'Edit Contact' : 'Add Contact' }}</h3>
-@if (duplicateError) {
-  <p class="error-msg">{{ duplicateError }}</p>
-}
+
 
     <app-child-componet
       [editContactData]="selectedContact"
       (contactAdded)="addContactToParent($event)">
     </app-child-componet>
-
-    <!-- <button class="close-btn" (click)="closeForm()">Close</button> -->
   </div>
 }
 
@@ -116,7 +34,7 @@
   <tbody>
     @for (c of contacts; track $index) {
       <tr>
-        <td>{{$index + 1}}</td>
+        <td>{{ $index + 1 }}</td>
         <td>{{ c.name }}</td>
         <td>{{ c.phone }}</td>
         <td>{{ c.email }}</td>
@@ -131,8 +49,34 @@
       </tr>
     }
   </tbody>
-</table>
+</table> -->
+<button (click)="openForm()">Add Contact</button>
 
-<p *ngIf="contacts.length === 0">No contacts available</p>
-<input type="text" [(ngModel)]="n1">
-<p>{{n1}}</p>
+@if (showForm()) {
+
+  <div class="modal-backdrop" (click)="closeForm()"></div>
+
+  <div class="modal-box">
+    <app-child-componet
+      [contact]="selectedContact"
+      (save)="saveContact($event)">
+    </app-child-componet>
+  </div>
+}
+
+<table *ngIf="contacts().length">
+  <tr>
+    <th>Id</th><th>Name</th><th>Phone</th><th>Email</th><th>Action</th>
+  </tr>
+
+  <tr *ngFor="let c of contacts(); let i = index">
+    <td>{{ i + 1 }}</td>
+    <td>{{ c.name }}</td>
+    <td>{{ c.phone }}</td>
+    <td>{{ c.email }}</td>
+    <td>
+      <button (click)="editContact(c, i)">Edit</button>
+      <button (click)="deleteContact(i)">Delete</button>
+    </td>
+  </tr>
+</table>
