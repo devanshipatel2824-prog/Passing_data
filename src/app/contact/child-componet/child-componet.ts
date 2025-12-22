@@ -9,42 +9,45 @@ import { FormsModule } from '@angular/forms';
   styleUrl: './child-componet.css',
 })
 export class ChildComponet {
-   contact = input<any | null>();
-  save = output<any>();
-
-  name = signal('');
+ name = signal('');
   phone = signal('');
   email = signal('');
 
-  phoneError = signal(false);
-  emailError = signal(false);
+  // 🔹 INPUT SIGNAL
+  editContactData = input<any>(null);
+
+  // 🔹 OUTPUT SIGNAL
+  contactAdded = output<any>();
 
   constructor() {
+
+    //  EFFECT → CONSOLE LOG WHEN VALUE CHANGES
     effect(() => {
-      const c = this.contact();
-      if (c) {
-      this.name.set(c?.name ?? '');
-      this.phone.set(c?.phone ?? '');
-      this.email.set(c?.email ?? '');
+      console.log('ADD THE DATA');
+      console.log('Name:', this.name());
+      console.log('Phone:', this.phone());
+      console.log('Email:', this.email());
+    });
+
+    //  EFFECT FOR EDIT MODE
+    effect(() => {
+      const data = this.editContactData();
+      if (data) {
+        this.name.set(data.name);
+        this.phone.set(data.phone);
+        this.email.set(data.email);
       } else {
         this.reset();
       }
-console.log('name is ',this.name());
-console.log('phone number is',this.phone());
-console.log('email is',this.email());
+     
     });
   }
 
   submit() {
-    this.phoneError.set(!/^\d{10}$/.test(this.phone()));
-    this.emailError.set(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(this.email()));
-
-    if (this.phoneError() || this.emailError()) return;
-
-    this.save.emit({
+    this.contactAdded.emit({
       name: this.name(),
       phone: this.phone(),
-      email: this.email(),
+      email: this.email()
     });
 
     this.reset();
@@ -55,7 +58,8 @@ console.log('email is',this.email());
     this.phone.set('');
     this.email.set('');
   }
+}
 
-  }
+  
 
 

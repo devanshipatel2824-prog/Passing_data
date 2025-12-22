@@ -12,44 +12,45 @@ import { FormsModule } from '@angular/forms';
 })
 export class Contact {
 
-  cdref = inject(ChangeDetectorRef);
+    cdref = inject(ChangeDetectorRef);
 
-  contacts = signal<any[]>([]);
-  showForm = signal(false);
-  selectedContact = signal<any | null>(null);
-  editIndex = signal<number | null>(null);
+  contacts: any[] = [];
+  showForm = false;
+  selectedContact: any = null;
+  editIndex: number | null = null;
 
   openForm() {
-    this.showForm.set(true);
-    this.selectedContact.set(null);
-    this.editIndex.set(null);
+    this.showForm = true;
+    this.selectedContact = null;
+    this.editIndex = null;
   }
 
   closeForm() {
-    this.showForm.set(false);
-    this.selectedContact.set(null);
-    this.editIndex.set(null);
+    this.showForm = false;
+    this.selectedContact = null;
+    this.editIndex = null;
   }
 
   editContact(contact: any, index: number) {
-    this.selectedContact.set({ ...contact });
-    this.editIndex.set(index);
-    this.showForm.set(true);
+    this.selectedContact = { ...contact };
+    this.editIndex = index;
+    this.showForm = true;
   }
 
   deleteContact(index: number) {
-    this.contacts.update(list => list.filter((_, i) => i !== index));
+    this.contacts.splice(index, 1);
   }
 
-  saveContact(contact: any) {
-    if (this.editIndex() !== null) {
-      this.contacts.update(list =>
-        list.map((c, i) => i === this.editIndex() ? contact : c)
-      );
+  addContactToParent(contact: any) {
+
+    if (this.editIndex !== null) {
+      // UPDATE
+      this.contacts[this.editIndex] = contact;
     } else {
-      this.contacts.update(list => [...list, contact]);
+      // ADD
+      this.contacts.push(contact);
     }
+
     this.closeForm();
   }
-
 }

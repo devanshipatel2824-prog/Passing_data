@@ -1,13 +1,13 @@
-<!-- <button (click)="openForm()">Add Contact</button> -->
+<button (click)="openForm()">Add Contact</button>
 
 <!-- POPUP -->
-<!-- @if (showForm) { -->
+@if (showForm) {
 
   <!-- background overlay -->
-  <!-- <div class="modal-backdrop" (click)="closeForm()"></div> -->
+  <div class="modal-backdrop" (click)="closeForm()"></div>
 
   <!-- popup box -->
-  <!-- <div class="modal-box">
+  <div class="modal-box">
     <h3>{{ editIndex !== null ? 'Edit Contact' : 'Add Contact' }}</h3>
 
 
@@ -49,34 +49,4 @@
       </tr>
     }
   </tbody>
-</table> -->
-<button (click)="openForm()">Add Contact</button>
-
-@if (showForm()) {
-
-  <div class="modal-backdrop" (click)="closeForm()"></div>
-
-  <div class="modal-box">
-    <app-child-componet
-      [contact]="selectedContact"
-      (save)="saveContact($event)">
-    </app-child-componet>
-  </div>
-}
-
-<table *ngIf="contacts().length">
-  <tr>
-    <th>Id</th><th>Name</th><th>Phone</th><th>Email</th><th>Action</th>
-  </tr>
-
-  <tr *ngFor="let c of contacts(); let i = index">
-    <td>{{ i + 1 }}</td>
-    <td>{{ c.name }}</td>
-    <td>{{ c.phone }}</td>
-    <td>{{ c.email }}</td>
-    <td>
-      <button (click)="editContact(c, i)">Edit</button>
-      <button (click)="deleteContact(i)">Delete</button>
-    </td>
-  </tr>
 </table>

@@ -1,17 +1,4 @@
-<!-- <form>
-  <input type="text" [(ngModel)]="name" name="name" placeholder="Name">
-  <br><br>
-
-  <input type="text" [(ngModel)]="phone" name="phone" placeholder="Phone">
-  <br><br>
-
-  <input type="email" [(ngModel)]="email" name="email" placeholder="Email">
-  <br><br>
-
-  <button type="button" (click)="addContact()">Add Data</button>
-
-</form> -->
-<!-- <form>
+<form>
   <input
     [(ngModel)]="name"
     name="name"
@@ -28,26 +15,6 @@
     placeholder="Email">
 
   <button type="button" (click)="submit()">
-    {{ editContactData ? 'Update' : 'Add' }}
-  </button>
-</form> -->
-<form>
-  <input
-    [value]="name()"
-    (input)="name.set($any($event.target).value)"
-    placeholder="Name" />
-
-  <input
-    [value]="phone()"
-    (input)="phone.set($any($event.target).value)"
-    placeholder="Mobile Number" />
-
-  <input
-    [value]="email()"
-    (input)="email.set($any($event.target).value)"
-    placeholder="Email" />
-
-  <button type="button" (click)="submit()">
-    {{ contact() ? 'Update' : 'Add' }}
+    {{ editContactData ()? 'Update' : 'Add' }}
   </button>
 </form>
