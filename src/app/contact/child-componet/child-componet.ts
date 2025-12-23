@@ -13,10 +13,10 @@ export class ChildComponet {
   phone = signal('');
   email = signal('');
 
-  // 🔹 INPUT SIGNAL
+  // INPUT SIGNAL
   editContactData = input<any>(null);
 
-  // 🔹 OUTPUT SIGNAL
+  // OUTPUT SIGNAL
   contactAdded = output<any>();
 
   constructor() {
@@ -42,6 +42,7 @@ export class ChildComponet {
      
     });
   }
+
 
   submit() {
     this.contactAdded.emit({
